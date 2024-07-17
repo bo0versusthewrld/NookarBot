@@ -1,0 +1,43 @@
+Run LavaLink with:
+
+java -jar Lavalink.jar
+To run it in the background, use screen:
+
+screen -S LavaLink
+java -jar Lavalink.jar
+Detach from the screen session with CTRL+A then D. Re-attach with screen -r LavaLink.
+
+Running LavaLink 24/7
+To keep LavaLink running continuously, use systemd.
+
+Step 1: Create a systemd Service File
+Create a service file for LavaLink:
+
+sudo nano /etc/systemd/system/lavalink.service
+Add the following configuration:
+
+[Unit]
+Description=LavaLink
+After=network.target
+
+[Service]
+User=your_username
+WorkingDirectory=/path/to/your/lavalink/directory
+ExecStart=/usr/bin/java -jar Lavalink.jar
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+Replace your_username with your actual username and /path/to/your/lavalink/directory with the path to your LavaLink directory.
+
+Step 2: Enable and Start the Service
+Enable and start the service:
+
+sudo systemctl enable lavalink.service
+sudo systemctl start lavalink.service
+Check the status of the service:
+
+sudo systemctl status lavalink.service
